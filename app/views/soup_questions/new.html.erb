@@ -1,0 +1,11 @@
+<% content_for :title, "New soup question" %>
+
+<h1>New soup question</h1>
+
+<%= render "form", soup_question: @soup_question %>
+
+<br>
+
+<div>
+  <%= link_to "Back to soup questions", soup_questions_path %>
+</div>

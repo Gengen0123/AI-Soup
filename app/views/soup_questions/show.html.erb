@@ -1,0 +1,32 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @soup_question %>
+
+<div>
+  <%= link_to "Edit this soup question", edit_soup_question_path(@soup_question) %> |
+  <%= link_to "Back to soup questions", soup_questions_path %>
+
+  <%= button_to "Destroy this soup question", @soup_question, method: :delete %>
+</div>
+
+<h2>質問する</h2>
+
+<%= form_with(model: [@soup_question, Question.new]) do |f| %>
+  <div>
+    <%= f.label :body, "質問内容" %><br>
+    <%= f.text_area :body %>
+  </div>
+
+  <div>
+    <%= f.submit "送信" %>
+  </div>
+<% end %>
+
+<h2>これまでの質問</h2>
+
+<% @soup_question.questions.each do |q| %>
+  <p>
+    Q: <%= q.body %><br>
+    A: <%= q.answer || "（未回答）" %>
+  </p>
+<% end %>

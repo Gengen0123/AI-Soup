@@ -8,8 +8,25 @@
 
 <h2>質問する</h2>
 
-<%= form_with(model: [@soup_question, Question.new]) do |f| %>
+<% if @question.errors.any? %>
   <div>
+    <p>質問を送信できませんでした。</p>
+    <ul>
+      <% @question.errors.each do |error| %>
+        <% if error.attribute == :body && error.type == :blank %>
+          <li>質問内容を入力してください</li>
+        <% elsif error.attribute == :body && error.type == :too_long %>
+          <li>質問内容は200文字以内で入力してください</li>
+        <% else %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with(model: [@soup_question, @question]) do |f| %>
+    <div>
     <%= f.label :body, "質問内容" %><br>
     <%= f.text_area :body %>
   </div>

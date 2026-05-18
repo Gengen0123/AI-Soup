@@ -7,7 +7,7 @@ class QuestionsController < ApplicationController
     if @question.save
       redirect_to @soup_question
     else
-      render "soup_questions/show"
+      render "soup_questions/show", status: :unprocessable_entity
     end
   end
 

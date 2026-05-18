@@ -8,6 +8,7 @@ class SoupQuestionsController < ApplicationController
 
   # GET /soup_questions/1 or /soup_questions/1.json
   def show
+    @question = Question.new
   end
 
   # GET /soup_questions/new

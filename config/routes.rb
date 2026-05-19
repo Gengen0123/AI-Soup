@@ -3,5 +3,10 @@ Rails.application.routes.draw do
 
   resources :soup_questions do
     resources :questions, only: [:create]
+
+    member do
+      get :answer
+      post :check_answer
+    end
   end
 end

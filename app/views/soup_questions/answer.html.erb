@@ -1,0 +1,46 @@
+<% content_for :title, "#{@soup_question.title}に回答する" %>
+
+<div class="page">
+  <h1><%= @soup_question.title %></h1>
+
+  <div class="soup-body">
+    <%= @soup_question.body %>
+  </div>
+
+  <div class="page-actions">
+    <%= link_to "質問ページに戻る", soup_question_path(@soup_question), class: "back-link" %>
+  </div>
+
+  <section class="answer-form">
+    <h2>答えを入力する</h2>
+
+    <% if @error_message.present? %>
+      <div class="error-box">
+        <p><%= @error_message %></p>
+      </div>
+    <% end %>
+
+    <% if @is_correct %>
+      <div class="success-box">
+        <h2>正解です</h2>
+
+        <h3>正解</h3>
+        <p><%= @soup_question.answer %></p>
+
+        <h3>解説</h3>
+        <p><%= @soup_question.explanation %></p>
+      </div>
+    <% else %>
+      <%= form_with url: check_answer_soup_question_path(@soup_question), method: :post do |f| %>
+        <div class="form-group">
+          <%= f.label :answer_text, "あなたの回答" %>
+          <%= f.text_area :answer_text, value: @answer_text, placeholder: "例：ワシが空から落とした亀が男に当たった" %>
+        </div>
+
+        <div>
+          <%= f.submit "回答する", class: "primary-button" %>
+        </div>
+      <% end %>
+    <% end %>
+  </section>
+</div>

@@ -1,37 +1,44 @@
-<%= form_with(model: soup_question) do |form| %>
+<%= form_with(model: soup_question, class: "soup-form") do |form| %>
   <% if soup_question.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(soup_question.errors.count, "error") %> prohibited this soup_question from being saved:</h2>
-
+    <div class="error-box">
+      <p>問題を保存できませんでした。</p>
       <ul>
         <% soup_question.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+          <% if error.attribute == :title && error.type == :blank %>
+            <li>タイトルを入力してください</li>
+          <% elsif error.attribute == :body && error.type == :blank %>
+            <li>問題文を入力してください</li>
+          <% elsif error.attribute == :answer && error.type == :blank %>
+            <li>正解を入力してください</li>
+          <% else %>
+            <li><%= error.full_message %></li>
+          <% end %>
         <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :title, style: "display: block" %>
-    <%= form.text_field :title %>
+  <div class="form-group">
+    <%= form.label :title, "タイトル" %>
+    <%= form.text_field :title, placeholder: "例：不運な男" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :body, "問題文" %>
+    <%= form.text_area :body, placeholder: "プレイヤーに見せる問題文を入力してください" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :answer, "正解" %>
+    <%= form.text_area :answer, placeholder: "AIが判定に使う正解を入力してください" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :explanation, "解説" %>
+    <%= form.text_area :explanation, placeholder: "補足説明や元ネタを書いてください" %>
   </div>
 
   <div>
-    <%= form.label :body, style: "display: block" %>
-    <%= form.textarea :body %>
-  </div>
-
-  <div>
-    <%= form.label :answer, style: "display: block" %>
-    <%= form.textarea :answer %>
-  </div>
-
-  <div>
-    <%= form.label :explanation, style: "display: block" %>
-    <%= form.textarea :explanation %>
-  </div>
-
-  <div>
-    <%= form.submit %>
+    <%= form.submit "保存する", class: "primary-button" %>
   </div>
 <% end %>

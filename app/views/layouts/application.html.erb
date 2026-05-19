@@ -24,6 +24,20 @@
   </head>
 
   <body>
+  <header class="site-header">
+  <div class="site-header-inner">
+    <%= link_to "AI-Soup", root_path, class: "site-logo" %>
+
+    <div class="auth-area">
+      <% if logged_in? %>
+        <span><%= current_user.name %> さん</span>
+        <%= button_to "ログアウト", logout_path, method: :delete, class: "auth-button" %>
+      <% else %>
+        <%= button_to "Googleでログイン", "/auth/google_oauth2", method: :post, data: { turbo: false }, class: "auth-button" %>
+      <% end %>
+    </div>
+  </div>
+</header>
     <%= yield %>
   </body>
 </html>

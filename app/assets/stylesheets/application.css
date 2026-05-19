@@ -257,3 +257,43 @@ body {
 .primary-button:hover {
     opacity: 0.85;
 }
+
+.site-header {
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+}
+
+.site-header-inner {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.site-logo {
+    font-weight: bold;
+    color: #222;
+    text-decoration: none;
+}
+
+.auth-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.auth-button {
+    padding: 8px 14px;
+    background-color: #222;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font: inherit;
+    cursor: pointer;
+}
+
+.auth-button:hover {
+    opacity: 0.85;
+}

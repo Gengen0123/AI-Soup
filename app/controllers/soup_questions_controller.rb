@@ -1,11 +1,12 @@
 class SoupQuestionsController < ApplicationController
-before_action :set_soup_question, only: %i[ show edit update destroy answer check_answer ]
-  # GET /soup_questions or /soup_questions.json
+  before_action :set_soup_question, only: %i[show edit update destroy answer check_answer]
+
+  # GET /soup_questions
   def index
     @soup_questions = SoupQuestion.all
   end
 
-  # GET /soup_questions/1 or /soup_questions/1.json
+  # GET /soup_questions/:id
   def show
     @question = Question.new
   end
@@ -15,17 +16,17 @@ before_action :set_soup_question, only: %i[ show edit update destroy answer chec
     @soup_question = SoupQuestion.new
   end
 
-  # GET /soup_questions/1/edit
+  # GET /soup_questions/:id/edit
   def edit
   end
 
-  # POST /soup_questions or /soup_questions.json
+  # POST /soup_questions
   def create
     @soup_question = SoupQuestion.new(soup_question_params)
 
     respond_to do |format|
       if @soup_question.save
-        format.html { redirect_to @soup_question, notice: "Soup question was successfully created." }
+        format.html { redirect_to @soup_question, notice: "問題を作成しました。" }
         format.json { render :show, status: :created, location: @soup_question }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -34,11 +35,11 @@ before_action :set_soup_question, only: %i[ show edit update destroy answer chec
     end
   end
 
-  # PATCH/PUT /soup_questions/1 or /soup_questions/1.json
+  # PATCH/PUT /soup_questions/:id
   def update
     respond_to do |format|
       if @soup_question.update(soup_question_params)
-        format.html { redirect_to @soup_question, notice: "Soup question was successfully updated.", status: :see_other }
+        format.html { redirect_to @soup_question, notice: "問題を更新しました。", status: :see_other }
         format.json { render :show, status: :ok, location: @soup_question }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -47,75 +48,78 @@ before_action :set_soup_question, only: %i[ show edit update destroy answer chec
     end
   end
 
-  # DELETE /soup_questions/1 or /soup_questions/1.json
+  # DELETE /soup_questions/:id
   def destroy
     @soup_question.destroy!
 
     respond_to do |format|
-      format.html { redirect_to soup_questions_path, notice: "Soup question was successfully destroyed.", status: :see_other }
+      format.html { redirect_to soup_questions_path, notice: "問題を削除しました。", status: :see_other }
       format.json { head :no_content }
     end
   end
 
+  # GET /soup_questions/:id/answer
   def answer
-  @answer_text = ""
-end
-
-def check_answer
-  @answer_text = params[:answer_text].to_s.strip
-
-  if @answer_text.blank?
-    @error_message = "回答を入力してください"
-    render :answer, status: :unprocessable_entity
-    return
+    @answer_text = ""
+    @is_correct = false
   end
 
-  @is_correct = judge_correct_answer(@soup_question, @answer_text)
+  # POST /soup_questions/:id/check_answer
+  def check_answer
+    @answer_text = params[:answer_text].to_s.strip
 
-  if @is_correct
-    render :answer
-  else
-    @error_message = "まだ正解ではありません。もう少し質問してみましょう。"
-    render :answer, status: :unprocessable_entity
+    if @answer_text.blank?
+      @is_correct = false
+      @error_message = "回答を入力してください"
+      render :answer, status: :unprocessable_entity
+      return
+    end
+
+    @is_correct = judge_correct_answer(@soup_question, @answer_text)
+
+    if @is_correct
+      render :answer, status: :ok
+    else
+      @error_message = "まだ正解ではありません。もう少し質問してみましょう。"
+      render :answer, status: :unprocessable_entity
+    end
   end
-end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_soup_question
-      @soup_question = SoupQuestion.find(params.expect(:id))
-    end
 
-    # Only allow a list of trusted parameters through.
-    def soup_question_params
-      params.expect(soup_question: [ :title, :body, :answer, :explanation ])
-    end
-end
+  def set_soup_question
+    @soup_question = SoupQuestion.find(params.expect(:id))
+  end
 
-def judge_correct_answer(soup_question, answer_text)
-  client = OpenAI::Client.new(
-    access_token: ENV.fetch("OPENAI_API_KEY")
-  )
+  def soup_question_params
+    params.expect(soup_question: [:title, :body, :answer, :explanation])
+  end
 
-  response = client.chat(
-    parameters: {
-      model: "gpt-4.1-mini",
-      messages: [
-        {
-          role: "system",
-          content: "あなたはウミガメのスープの正解判定者です。ユーザーの回答が正解の本質を満たしているかを判定してください。完全な文章一致は不要です。言い換え、要約、多少の表現違いがあっても、重要な原因・人物・出来事が合っていれば正解にしてください。必ず「正解」または「不正解」のどちらか一語だけで答えてください。"
-        },
-        {
-          role: "user",
-          content: "問題文: #{soup_question.body}\n正解: #{soup_question.answer}\n解説: #{soup_question.explanation}\nユーザーの回答: #{answer_text}"
-        }
-      ]
-    }
-  )
+  def judge_correct_answer(soup_question, answer_text)
+    client = OpenAI::Client.new(
+      access_token: ENV.fetch("OPENAI_API_KEY")
+    )
 
-  result = response.dig("choices", 0, "message", "content").to_s.strip
+    response = client.chat(
+      parameters: {
+        model: "gpt-4.1-mini",
+        messages: [
+          {
+            role: "system",
+            content: "あなたはウミガメのスープの正解判定者です。ユーザーの回答が正解の本質を満たしているかを判定してください。完全な文章一致は不要です。言い換え、要約、多少の表現違いがあっても、重要な原因・人物・出来事が合っていれば正解にしてください。必ず「正解」または「不正解」のどちらか一語だけで答えてください。"
+          },
+          {
+            role: "user",
+            content: "問題文: #{soup_question.body}\n正解: #{soup_question.answer}\n解説: #{soup_question.explanation}\nユーザーの回答: #{answer_text}"
+          }
+        ]
+      }
+    )
 
-  Rails.logger.debug "AI answer judge result: #{result}"
+    result = response.dig("choices", 0, "message", "content").to_s.strip
 
-  result == "正解" || result.start_with?("正解")
+    Rails.logger.debug "AI answer judge result: #{result}"
+
+    result.start_with?("正解")
+  end
 end

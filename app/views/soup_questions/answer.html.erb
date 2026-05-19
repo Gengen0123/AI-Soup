@@ -31,8 +31,8 @@
         <p><%= @soup_question.explanation %></p>
       </div>
     <% else %>
-      <%= form_with url: check_answer_soup_question_path(@soup_question), method: :post do |f| %>
-        <div class="form-group">
+<%= form_with url: check_answer_soup_question_path(@soup_question), method: :post, data: { turbo: false } do |f| %>       
+     <div class="form-group">
           <%= f.label :answer_text, "あなたの回答" %>
           <%= f.text_area :answer_text, value: @answer_text, placeholder: "例：ワシが空から落とした亀が男に当たった" %>
         </div>

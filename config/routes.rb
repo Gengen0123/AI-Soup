@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   get "/auth/failure", to: redirect("/")
   delete "/logout", to: "sessions#destroy"
 
+  get "/my/soup_questions", to: "soup_questions#mine", as: :my_soup_questions
+  
   resources :soup_questions do
     resources :questions, only: [:create]
 

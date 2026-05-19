@@ -2,10 +2,15 @@ class SoupQuestionsController < ApplicationController
   before_action :set_soup_question, only: %i[show edit update destroy answer check_answer]
 before_action :require_login, only: %i[new create edit update destroy]
 before_action :require_owner, only: %i[edit update destroy]
+before_action :require_login, only: %i[mine new create edit update destroy]
   # GET /soup_questions
   def index
     @soup_questions = SoupQuestion.all
   end
+
+  def mine
+  @soup_questions = current_user.soup_questions.order(created_at: :desc)
+end
 
   # GET /soup_questions/:id
   def show

@@ -1,0 +1,36 @@
+<% content_for :title, "自分の問題一覧" %>
+
+<div class="page">
+  <header class="page-header">
+    <h1>自分の問題一覧</h1>
+    <p>あなたが作成した問題を管理できます。</p>
+
+    <%= link_to "新しい問題を作成", new_soup_question_path, class: "primary-link" %>
+  </header>
+
+  <section class="soup-list">
+    <% if @soup_questions.any? %>
+      <% @soup_questions.each do |soup_question| %>
+        <div class="soup-card">
+          <h3><%= soup_question.title %></h3>
+
+          <p>
+            <%= truncate(soup_question.body, length: 120) %>
+          </p>
+
+          <div class="owner-actions">
+            <%= link_to "詳細を見る", soup_question_path(soup_question), class: "card-link" %>
+            <%= link_to "編集する", edit_soup_question_path(soup_question), class: "card-link" %>
+            <%= button_to "削除する", soup_question, method: :delete, class: "danger-button", data: { turbo_confirm: "本当に削除しますか？" } %>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <p>まだ問題を作成していません。</p>
+    <% end %>
+  </section>
+
+  <div class="page-actions">
+    <%= link_to "問題一覧に戻る", soup_questions_path, class: "back-link" %>
+  </div>
+</div>

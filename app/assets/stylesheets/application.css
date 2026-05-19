@@ -339,3 +339,13 @@ body {
 .danger-button:hover {
     opacity: 0.85;
 }
+
+.header-link {
+    color: #222;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.header-link:hover {
+    text-decoration: underline;
+}

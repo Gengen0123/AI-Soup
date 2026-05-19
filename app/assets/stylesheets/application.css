@@ -137,3 +137,26 @@ body {
     color: #222;
     font-weight: bold;
 }
+
+.page-actions {
+    margin: 20px 0;
+}
+
+.back-link {
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+.question-form h2,
+.question-history h2 {
+    margin-top: 0;
+}
+
+.question-form textarea::placeholder {
+    color: #999;
+}

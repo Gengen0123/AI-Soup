@@ -1,7 +1,11 @@
+<% content_for :title, @soup_question.title %>
+
 <div class="page">
   <%= render @soup_question %>
 
-  <%= link_to "問題一覧に戻る", soup_questions_path %>
+  <div class="page-actions">
+    <%= link_to "問題一覧に戻る", soup_questions_path, class: "back-link" %>
+  </div>
 
   <section class="question-form">
     <h2>質問する</h2>
@@ -26,11 +30,11 @@
     <%= form_with(model: [@soup_question, @question]) do |f| %>
       <div>
         <%= f.label :body, "質問内容" %><br>
-        <%= f.text_area :body %>
+        <%= f.text_area :body, placeholder: "例：真犯人は人間ですか？" %>
       </div>
 
       <div>
-        <%= f.submit "送信" %>
+        <%= f.submit "質問する" %>
       </div>
     <% end %>
   </section>
@@ -38,11 +42,15 @@
   <section class="question-history">
     <h2>これまでの質問</h2>
 
-    <% @soup_question.questions.each do |q| %>
-      <div class="question-card">
-        <p><strong>Q:</strong> <%= q.body %></p>
-        <p class="answer"><strong>A:</strong> <%= q.answer %></p>
-      </div>
+    <% if @soup_question.questions.any? %>
+      <% @soup_question.questions.each do |q| %>
+        <div class="question-card">
+          <p><strong>Q:</strong> <%= q.body %></p>
+          <p class="answer"><strong>A:</strong> <%= q.answer %></p>
+        </div>
+      <% end %>
+    <% else %>
+      <p>まだ質問はありません。</p>
     <% end %>
   </section>
 </div>

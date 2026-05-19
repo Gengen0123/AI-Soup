@@ -7,6 +7,14 @@
     <%= link_to "問題一覧に戻る", soup_questions_path, class: "back-link" %>
     <%= link_to "答える", answer_soup_question_path(@soup_question), class: "primary-link" %>
   </div>
+  
+<% if logged_in? && @soup_question.user == current_user %>
+  <div class="owner-actions">
+    <%= link_to "問題を編集する", edit_soup_question_path(@soup_question), class: "back-link" %>
+
+    <%= button_to "問題を削除する", @soup_question, method: :delete, class: "danger-button", data: { turbo_confirm: "本当に削除しますか？" } %>
+  </div>
+<% end %>
 
   <section class="question-form">
     <h2>質問する</h2>

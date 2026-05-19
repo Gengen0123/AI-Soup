@@ -317,3 +317,25 @@ body {
     border: 1px solid #e0a0a0;
     color: #7f1d1d;
 }
+
+.owner-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 16px 0 24px;
+}
+
+.danger-button {
+    padding: 8px 14px;
+    background-color: #7f1d1d;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font: inherit;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.danger-button:hover {
+    opacity: 0.85;
+}

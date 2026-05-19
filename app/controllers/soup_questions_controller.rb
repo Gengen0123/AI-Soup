@@ -1,6 +1,7 @@
 class SoupQuestionsController < ApplicationController
   before_action :set_soup_question, only: %i[show edit update destroy answer check_answer]
 before_action :require_login, only: %i[new create edit update destroy]
+before_action :require_owner, only: %i[edit update destroy]
   # GET /soup_questions
   def index
     @soup_questions = SoupQuestion.all
@@ -90,6 +91,12 @@ end
   def set_soup_question
     @soup_question = SoupQuestion.find(params.expect(:id))
   end
+
+def require_owner
+  unless @soup_question.user == current_user
+    redirect_to soup_question_path(@soup_question), alert: "この問題を編集する権限がありません。"
+  end
+end
 
   def soup_question_params
     params.expect(soup_question: [:title, :body, :answer, :explanation])

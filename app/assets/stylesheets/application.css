@@ -82,3 +82,58 @@ body {
 .answer {
     font-weight: bold;
 }
+
+.page-header {
+    margin-bottom: 32px;
+}
+
+.page-header h1 {
+    font-size: 36px;
+    margin-bottom: 8px;
+}
+
+.page-header p {
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.primary-link {
+    display: inline-block;
+    padding: 10px 16px;
+    background-color: #222;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+}
+
+.primary-link:hover {
+    opacity: 0.85;
+}
+
+.soup-list {
+    margin-top: 32px;
+}
+
+.soup-card {
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    margin-bottom: 16px;
+}
+
+.soup-card h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
+.soup-card p {
+    color: #444;
+}
+
+.card-link {
+    display: inline-block;
+    margin-top: 8px;
+    color: #222;
+    font-weight: bold;
+}

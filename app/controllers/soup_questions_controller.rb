@@ -1,6 +1,6 @@
 class SoupQuestionsController < ApplicationController
   before_action :set_soup_question, only: %i[show edit update destroy answer check_answer]
-
+before_action :require_login, only: %i[new create edit update destroy]
   # GET /soup_questions
   def index
     @soup_questions = SoupQuestion.all
@@ -21,19 +21,19 @@ class SoupQuestionsController < ApplicationController
   end
 
   # POST /soup_questions
-  def create
-    @soup_question = SoupQuestion.new(soup_question_params)
+def create
+  @soup_question = current_user.soup_questions.build(soup_question_params)
 
-    respond_to do |format|
-      if @soup_question.save
-        format.html { redirect_to @soup_question, notice: "問題を作成しました。" }
-        format.json { render :show, status: :created, location: @soup_question }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @soup_question.errors, status: :unprocessable_entity }
-      end
+  respond_to do |format|
+    if @soup_question.save
+      format.html { redirect_to @soup_question, notice: "問題を作成しました。" }
+      format.json { render :show, status: :created, location: @soup_question }
+    else
+      format.html { render :new, status: :unprocessable_entity }
+      format.json { render json: @soup_question.errors, status: :unprocessable_entity }
     end
   end
+end
 
   # PATCH/PUT /soup_questions/:id
   def update

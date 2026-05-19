@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  has_many :soup_questions, dependent: :destroy
+
   validates :provider, presence: true
   validates :uid, presence: true, uniqueness: { scope: :provider }
 

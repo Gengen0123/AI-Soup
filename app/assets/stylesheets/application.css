@@ -297,3 +297,23 @@ body {
 .auth-button:hover {
     opacity: 0.85;
 }
+
+.flash {
+    max-width: 760px;
+    margin: 20px auto 0;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.flash-notice {
+    background-color: #f0fff4;
+    border: 1px solid #8fd19e;
+    color: #22543d;
+}
+
+.flash-alert {
+    background-color: #fff0f0;
+    border: 1px solid #e0a0a0;
+    color: #7f1d1d;
+}

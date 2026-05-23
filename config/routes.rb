@@ -12,9 +12,10 @@ Rails.application.routes.draw do
   resources :soup_question_ratings, only: [:create, :update]
 
   member do
-    get :answer
-    post :check_answer
-    post :give_up
-  end
+  get :answer
+  post :check_answer
+  post :give_up
+  post :retry_attempt
+end
 end
 end

@@ -81,13 +81,21 @@
   </div>
 <% end %>
 
-<% if @attempt.gave_up? %>
+<% if @attempt.gave_up? || @attempt.solved? %>
   <section class="answer-reveal">
     <h2>解説</h2>
 
     <div class="question-card">
       <p><strong>正解:</strong> <%= @soup_question.answer %></p>
       <p><strong>解説:</strong> <%= @soup_question.explanation %></p>
+    </div>
+
+    <div class="page-actions">
+      <%= button_to "もう一度挑戦する",
+          retry_attempt_soup_question_path(@soup_question),
+          method: :post,
+          class: "primary-link",
+          data: { turbo_confirm: "質問履歴とクリア状態をリセットして、もう一度挑戦しますか？" } %>
     </div>
   </section>
 <% end %>

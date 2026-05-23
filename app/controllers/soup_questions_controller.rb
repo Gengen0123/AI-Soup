@@ -1,5 +1,5 @@
 class SoupQuestionsController < ApplicationController
-  before_action :set_soup_question, only: %i[show edit update destroy answer check_answer give_up]
+  before_action :set_soup_question, only: %i[show edit update destroy answer check_answer give_up retry_attempt]
   before_action :require_login, only: %i[mine new create edit update destroy]
   before_action :require_owner, only: %i[edit update destroy]
     # GET /soup_questions
@@ -106,6 +106,14 @@ def give_up
   @attempt.update!(gave_up: true)
 
   redirect_to @soup_question, notice: "ギブアップしました。解説を表示します。"
+end
+
+def retry_attempt
+  @attempt = current_soup_question_attempt
+  @attempt.questions.destroy_all
+  @attempt.update!(gave_up: false, solved: false)
+
+  redirect_to @soup_question, notice: "もう一度挑戦できます。"
 end
 
   private

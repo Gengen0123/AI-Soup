@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  soup_question: one
+  user: one
+  clarity_score: 1
+  difficulty_score: 1
+
+two:
+  soup_question: two
+  user: two
+  clarity_score: 1
+  difficulty_score: 1

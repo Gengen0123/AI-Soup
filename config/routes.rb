@@ -8,11 +8,13 @@ Rails.application.routes.draw do
   get "/my/soup_questions", to: "soup_questions#mine", as: :my_soup_questions
   
   resources :soup_questions do
-    resources :questions, only: [:create]
+  resources :questions, only: [:create]
+  resources :soup_question_ratings, only: [:create, :update]
 
-    member do
-      get :answer
-      post :check_answer
-    end
+  member do
+    get :answer
+    post :check_answer
+    post :give_up
   end
+end
 end

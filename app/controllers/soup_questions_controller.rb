@@ -1,9 +1,8 @@
 class SoupQuestionsController < ApplicationController
-  before_action :set_soup_question, only: %i[show edit update destroy answer check_answer]
-before_action :require_login, only: %i[new create edit update destroy]
-before_action :require_owner, only: %i[edit update destroy]
-before_action :require_login, only: %i[mine new create edit update destroy]
-  # GET /soup_questions
+  before_action :set_soup_question, only: %i[show edit update destroy answer check_answer give_up]
+  before_action :require_login, only: %i[mine new create edit update destroy]
+  before_action :require_owner, only: %i[edit update destroy]
+    # GET /soup_questions
   def index
     @soup_questions = SoupQuestion.all
   end
@@ -13,9 +12,13 @@ before_action :require_login, only: %i[mine new create edit update destroy]
 end
 
   # GET /soup_questions/:id
-  def show
-    @question = Question.new
-  end
+def show
+  @attempt = current_soup_question_attempt
+  @question = Question.new
+  @questions = @attempt.questions.order(created_at: :asc)
+
+  @rating = current_user ? @soup_question.soup_question_ratings.find_by(user: current_user) : nil
+end
 
   # GET /soup_questions/new
   def new
@@ -70,6 +73,8 @@ end
     @is_correct = false
   end
 
+
+  
   # POST /soup_questions/:id/check_answer
   def check_answer
     @answer_text = params[:answer_text].to_s.strip
@@ -84,18 +89,37 @@ end
     @is_correct = judge_correct_answer(@soup_question, @answer_text)
 
     if @is_correct
-      render :answer, status: :ok
-    else
-      @error_message = "まだ正解ではありません。もう少し質問してみましょう。"
-      render :answer, status: :unprocessable_entity
-    end
+  @attempt = current_soup_question_attempt
+  @attempt.update!(solved: true)
+
+  render :answer, status: :ok
+else
+  @error_message = "まだ正解ではありません。もう少し質問してみましょう。"
+  render :answer, status: :unprocessable_entity
+end
   end
+
+def give_up
+  @attempt = current_soup_question_attempt
+  @attempt.update!(gave_up: true)
+
+  redirect_to @soup_question, notice: "ギブアップしました。解説を表示します。"
+end
 
   private
 
   def set_soup_question
     @soup_question = SoupQuestion.find(params.expect(:id))
   end
+
+  def current_soup_question_attempt
+  @current_soup_question_attempt ||= SoupQuestionAttempt.find_or_create_by!(
+    soup_question: @soup_question,
+    session_token: current_session_token
+  ) do |attempt|
+    attempt.user = current_user if current_user.present?
+  end
+end
 
 def require_owner
   unless @soup_question.user == current_user

@@ -3,10 +3,75 @@
 <div class="page">
   <%= render @soup_question %>
 
-  <div class="page-actions">
-    <%= link_to "問題一覧に戻る", soup_questions_path, class: "back-link" %>
-    <%= link_to "答える", answer_soup_question_path(@soup_question), class: "primary-link" %>
-  </div>
+<section class="rating-summary">
+  <h2>評価</h2>
+
+  <% if @soup_question.ratings_count > 0 %>
+    <p>スッキリ度：<%= @soup_question.average_clarity_score %> / 5</p>
+    <p>難易度：<%= @soup_question.average_difficulty_score %> / 5</p>
+    <p>評価数：<%= @soup_question.ratings_count %>件</p>
+  <% else %>
+    <p>まだ評価はありません。</p>
+  <% end %>
+</section>
+
+<% if logged_in? && @soup_question.user != current_user %>
+  <section class="rating-form">
+    <h2>この問題を評価する</h2>
+
+    <% if @rating.present? %>
+      <%= form_with(model: [@soup_question, @rating]) do |f| %>
+        <div>
+          <%= f.label :clarity_score, "スッキリ度" %><br>
+          <%= f.select :clarity_score, options_for_select((1..5).map { |n| ["#{n}", n] }, @rating.clarity_score) %>
+        </div>
+
+        <div>
+          <%= f.label :difficulty_score, "難易度" %><br>
+          <%= f.select :difficulty_score, options_for_select((1..5).map { |n| ["#{n}", n] }, @rating.difficulty_score) %>
+        </div>
+
+        <div>
+          <%= f.submit "評価を更新する" %>
+        </div>
+      <% end %>
+    <% else %>
+      <%= form_with(model: [@soup_question, SoupQuestionRating.new]) do |f| %>
+        <div>
+          <%= f.label :clarity_score, "スッキリ度" %><br>
+          <%= f.select :clarity_score, options_for_select((1..5).map { |n| ["#{n}", n] }) %>
+        </div>
+
+        <div>
+          <%= f.label :difficulty_score, "難易度" %><br>
+          <%= f.select :difficulty_score, options_for_select((1..5).map { |n| ["#{n}", n] }) %>
+        </div>
+
+        <div>
+          <%= f.submit "評価する" %>
+        </div>
+      <% end %>
+    <% end %>
+  </section>
+<% elsif logged_in? && @soup_question.user == current_user %>
+  <section class="rating-form">
+    <p>作問者は自分の問題を評価できません。</p>
+  </section>
+<% else %>
+  <section class="rating-form">
+    <p>評価するにはGoogleログインが必要です。</p>
+  </section>
+<% end %>
+
+ <div class="page-actions">
+  <%= link_to "問題一覧に戻る", soup_questions_path, class: "back-link" %>
+  <%= link_to "答える", answer_soup_question_path(@soup_question), class: "primary-link" %>
+
+  <%= button_to "ギブアップ", give_up_soup_question_path(@soup_question),
+      method: :post,
+      class: "back-link",
+      data: { turbo_confirm: "ギブアップすると解説が表示されます。本当にギブアップしますか？" } %>
+</div>
   
 <% if logged_in? && @soup_question.user == current_user %>
   <div class="owner-actions">
@@ -14,6 +79,17 @@
 
     <%= button_to "問題を削除する", @soup_question, method: :delete, class: "danger-button", data: { turbo_confirm: "本当に削除しますか？" } %>
   </div>
+<% end %>
+
+<% if @attempt.gave_up? %>
+  <section class="answer-reveal">
+    <h2>解説</h2>
+
+    <div class="question-card">
+      <p><strong>正解:</strong> <%= @soup_question.answer %></p>
+      <p><strong>解説:</strong> <%= @soup_question.explanation %></p>
+    </div>
+  </section>
 <% end %>
 
   <section class="question-form">

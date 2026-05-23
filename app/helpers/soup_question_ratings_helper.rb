@@ -1,0 +1,2 @@
+module SoupQuestionRatingsHelper
+end

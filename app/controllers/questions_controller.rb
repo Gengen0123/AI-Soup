@@ -1,17 +1,30 @@
 class QuestionsController < ApplicationController
   def create
     @soup_question = SoupQuestion.find(params[:soup_question_id])
-    @question = @soup_question.questions.build(question_params)
+    @attempt = current_soup_question_attempt
+
+    @question = @attempt.questions.build(question_params)
+    @question.soup_question = @soup_question
     @question.answer = generate_answer(@soup_question, @question.body)
 
     if @question.save
       redirect_to @soup_question
     else
+      @questions = @attempt.questions.order(created_at: :asc)
       render "soup_questions/show", status: :unprocessable_entity
     end
   end
 
   private
+
+  def current_soup_question_attempt
+    @current_soup_question_attempt ||= SoupQuestionAttempt.find_or_create_by!(
+      soup_question: @soup_question,
+      session_token: current_session_token
+    ) do |attempt|
+      attempt.user = current_user if current_user.present?
+    end
+  end
 
   def question_params
     params.require(:question).permit(:body)
@@ -38,7 +51,7 @@ class QuestionsController < ApplicationController
       }
     )
 
-    answer = response.dig("choices", 0, "message", "content")
+    answer = response.dig("choices", 0, "message", "content").to_s
 
     if answer.include?("はい")
       "はい"

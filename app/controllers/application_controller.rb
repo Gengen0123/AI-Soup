@@ -16,4 +16,8 @@ class ApplicationController < ActionController::Base
       redirect_to root_path, alert: "問題を作成するにはGoogleログインが必要です。"
     end
   end
+
+  def current_session_token
+    session[:session_token] ||= SecureRandom.hex(16)
+  end
 end

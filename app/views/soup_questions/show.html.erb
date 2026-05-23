@@ -125,17 +125,17 @@
   </section>
 
   <section class="question-history">
-    <h2>これまでの質問</h2>
+  <h2>これまでの質問</h2>
 
-    <% if @soup_question.questions.any? %>
-      <% @soup_question.questions.each do |q| %>
-        <div class="question-card">
-          <p><strong>Q:</strong> <%= q.body %></p>
-          <p class="answer"><strong>A:</strong> <%= q.answer %></p>
-        </div>
-      <% end %>
-    <% else %>
-      <p>まだ質問はありません。</p>
+  <% if @questions.any? %>
+    <% @questions.each do |q| %>
+      <div class="question-card">
+        <p><strong>Q:</strong> <%= q.body %></p>
+        <p class="answer"><strong>A:</strong> <%= q.answer %></p>
+      </div>
     <% end %>
-  </section>
+  <% else %>
+    <p>まだ質問はありません。</p>
+  <% end %>
+</section>
 </div>

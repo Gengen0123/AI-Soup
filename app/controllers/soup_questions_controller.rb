@@ -90,6 +90,7 @@ end
 
     if @is_correct
   @attempt = current_soup_question_attempt
+  @attempt.questions.destroy_all
   @attempt.update!(solved: true)
 
   render :answer, status: :ok
@@ -101,6 +102,7 @@ end
 
 def give_up
   @attempt = current_soup_question_attempt
+  @attempt.questions.destroy_all
   @attempt.update!(gave_up: true)
 
   redirect_to @soup_question, notice: "ギブアップしました。解説を表示します。"

@@ -349,3 +349,223 @@ body {
 .header-link:hover {
     text-decoration: underline;
 }
+
+/* ===== Detail page common sections ===== */
+
+.rating-summary,
+.rating-form,
+.question-form,
+.question-history,
+.answer-reveal {
+    margin-top: 32px;
+    padding: 28px;
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 16px;
+}
+
+.rating-summary h2,
+.rating-form h2,
+.question-form h2,
+.question-history h2,
+.answer-reveal h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 28px;
+    line-height: 1.3;
+}
+
+.rating-summary p,
+.rating-form p {
+    margin: 10px 0;
+    color: #333;
+    font-size: 16px;
+}
+
+/* ===== Rating form ===== */
+
+.rating-form form {
+    display: grid;
+    gap: 16px;
+    max-width: 360px;
+}
+
+.rating-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.rating-form select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #bbb;
+    border-radius: 10px;
+    background: #fff;
+    font-size: 16px;
+}
+
+.rating-form input[type="submit"] {
+    width: fit-content;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 12px;
+    background: #222;
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.rating-form input[type="submit"]:hover {
+    opacity: 0.85;
+}
+
+/* ===== Question form ===== */
+
+.question-form form {
+    display: grid;
+    gap: 18px;
+}
+
+.question-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.question-form textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 16px;
+    border: 1px solid #bbb;
+    border-radius: 12px;
+    font-size: 16px;
+    line-height: 1.7;
+    resize: vertical;
+    box-sizing: border-box;
+}
+
+.question-form textarea::placeholder {
+    color: #999;
+}
+
+.question-form input[type="submit"] {
+    width: fit-content;
+    padding: 14px 24px;
+    border: none;
+    border-radius: 12px;
+    background: #222;
+    color: #fff;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.question-form input[type="submit"]:hover {
+    opacity: 0.85;
+}
+
+/* ===== Page actions ===== */
+
+.page-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px;
+    margin-top: 28px;
+}
+
+.page-actions form {
+    margin: 0;
+}
+
+.back-link,
+.primary-link,
+.page-actions button,
+.page-actions input[type="submit"] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0 18px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.back-link {
+    color: #222;
+    background: #fff;
+}
+
+.primary-link {
+    color: #fff;
+    background: #222;
+    border-color: #222;
+}
+
+.page-actions button,
+.page-actions input[type="submit"] {
+    color: #222;
+    background: #fff;
+}
+
+.back-link:hover,
+.primary-link:hover,
+.page-actions button:hover,
+.page-actions input[type="submit"]:hover {
+    opacity: 0.85;
+}
+
+/* ===== Question history ===== */
+
+.question-card {
+    padding: 18px 20px;
+    margin-top: 14px;
+    border: 1px solid #e2e2e2;
+    border-radius: 14px;
+    background: #fafafa;
+}
+
+.question-card p {
+    margin: 6px 0;
+    line-height: 1.7;
+}
+
+.question-card .answer {
+    color: #444;
+}
+
+/* ===== Mobile ===== */
+
+@media (max-width: 640px) {
+
+    .rating-summary,
+    .rating-form,
+    .question-form,
+    .question-history,
+    .answer-reveal {
+        padding: 20px;
+        border-radius: 14px;
+    }
+
+    .page-actions {
+        align-items: stretch;
+    }
+
+    .back-link,
+    .primary-link,
+    .page-actions button,
+    .page-actions input[type="submit"] {
+        width: 100%;
+    }
+
+    .question-form input[type="submit"],
+    .rating-form input[type="submit"] {
+        width: 100%;
+    }
+}

@@ -1,167 +1,281 @@
-/*
- * This is a manifest file that'll be compiled into application.css.
- *
- * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
- * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
- * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
- * depending on specificity.
- *
- * Consider organizing styles into separate files for maintainability.
- */
+/* =========================================================
+   AI-Soup application.css
+   Mobile-first cleaned version
+   ========================================================= */
 
+/* =========================================================
+   1. Base
+   ========================================================= */
 
-body {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    background-color: #f6f6f6;
-    color: #222;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-}
-
-.page {
-    max-width: 760px;
-    margin: 40px auto;
-    padding: 24px;
-    background-color: #fff;
-    border-radius: 12px;
-}
-
-.soup-title {
-    font-size: 28px;
-    margin-bottom: 16px;
-}
-
-.soup-body {
-    padding: 16px;
-    background-color: #fafafa;
-    border-left: 4px solid #333;
-    margin-bottom: 24px;
-}
-
-.question-form {
-    margin-top: 32px;
-    padding: 16px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-}
-
-.question-form textarea {
-    width: 100%;
-    min-height: 80px;
-    padding: 8px;
+*,
+*::before,
+*::after {
     box-sizing: border-box;
 }
 
-.question-form input[type="submit"] {
-    margin-top: 8px;
-    padding: 8px 16px;
+html {
+    font-size: 16px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #f6f6f6;
+    color: #222;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    line-height: 1.6;
+}
+
+a {
+    color: inherit;
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+button,
+input[type="submit"] {
     cursor: pointer;
 }
 
-.error-box {
-    padding: 12px;
-    background-color: #fff0f0;
-    border: 1px solid #e0a0a0;
-    border-radius: 8px;
-    margin-bottom: 16px;
+img {
+    max-width: 100%;
+    height: auto;
 }
 
-.question-history {
-    margin-top: 32px;
+/* =========================================================
+   2. Layout
+   ========================================================= */
+
+.page {
+    width: min(100% - 32px, 760px);
+    max-width: 760px;
+    margin: 24px auto;
+    padding: 24px;
+    background: #fff;
+    border-radius: 16px;
 }
 
-.question-card {
+.flash {
+    width: min(100% - 32px, 760px);
+    max-width: 760px;
+    margin: 16px auto 0;
     padding: 12px 16px;
-    background-color: #fafafa;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    margin-bottom: 12px;
+    border-radius: 10px;
+    font-weight: 700;
 }
 
-.answer {
-    font-weight: bold;
+.flash-notice {
+    background: #f0fff4;
+    border: 1px solid #8fd19e;
+    color: #22543d;
 }
 
-.page-header {
-    margin-bottom: 32px;
+.flash-alert {
+    background: #fff0f0;
+    border: 1px solid #e0a0a0;
+    color: #7f1d1d;
 }
 
-.page-header h1 {
-    font-size: 36px;
-    margin-bottom: 8px;
+/* =========================================================
+   3. Header / Global menu
+   ========================================================= */
+
+.site-header {
+    background: #fff;
+    border-bottom: 1px solid #e5e5e5;
 }
 
-.page-header p {
-    color: #555;
-    margin-bottom: 20px;
+.site-header-inner {
+    width: min(100% - 32px, 760px);
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 14px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-.primary-link {
-    display: inline-block;
-    padding: 10px 16px;
-    background-color: #222;
-    color: #fff;
+.site-logo {
+    color: #222;
+    font-size: 18px;
+    font-weight: 800;
     text-decoration: none;
-    border-radius: 8px;
+    white-space: nowrap;
 }
 
-.primary-link:hover {
+.global-menu {
+    position: relative;
+}
+
+.global-menu summary {
+    list-style: none;
+}
+
+.global-menu summary::-webkit-details-marker {
+    display: none;
+}
+
+.global-menu-button {
+    width: 42px;
+    height: 42px;
+    border: 1px solid #ddd;
+    border-radius: 999px;
+    background: #fff;
+    color: #222;
+    font-size: 24px;
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.global-menu-panel {
+    position: absolute;
+    right: 0;
+    top: 48px;
+    z-index: 100;
+    min-width: 200px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.14);
+}
+
+.global-menu-panel form {
+    margin: 0;
+}
+
+.global-menu-link,
+.global-menu-button-item,
+.global-menu-user {
+    display: block;
+    width: 100%;
+    padding: 11px 12px;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    color: #222;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: left;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.global-menu-button-item {
+    cursor: pointer;
+}
+
+.global-menu-link:hover,
+.global-menu-button-item:hover {
+    background: #f4f4f4;
+}
+
+.global-menu-user {
+    margin-bottom: 4px;
+    color: #666;
+    font-weight: 600;
+    border-bottom: 1px solid #eee;
+}
+
+.global-menu-separator {
+    height: 1px;
+    margin: 6px 0;
+    background: #eee;
+}
+
+.danger-menu-button {
+    color: #b42318;
+}
+
+/* 古いヘッダー構造が残っていても表示崩れさせない */
+.auth-area {
+    display: none;
+}
+
+/* =========================================================
+   4. Buttons / Links
+   ========================================================= */
+
+.primary-link,
+.primary-button,
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0 16px;
+    border-radius: 12px;
+    border: 1px solid #222;
+    background: #222;
+    color: #fff;
+    font-weight: 800;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.primary-link:hover,
+.primary-button:hover,
+.btn:hover {
     opacity: 0.85;
 }
 
-.soup-list {
-    margin-top: 32px;
+.btn {
+    box-sizing: border-box;
+    font-size: 15px;
 }
 
-.soup-card {
-    padding: 20px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    margin-bottom: 16px;
+.btn-primary {
+    border-color: #222;
+    background: #222;
+    color: #fff;
 }
 
-.soup-card h3 {
-    margin-top: 0;
-    margin-bottom: 8px;
-}
-
-.soup-card p {
-    color: #444;
-}
-
-.card-link {
-    display: inline-block;
-    margin-top: 8px;
+.btn-secondary {
+    border-color: #ccc;
+    background: #fff;
     color: #222;
-    font-weight: bold;
-}
-
-.page-actions {
-    margin: 20px 0;
 }
 
 .back-link {
-    color: #333;
+    color: #222;
+    font-weight: 800;
     text-decoration: none;
-    font-weight: bold;
 }
 
 .back-link:hover {
     text-decoration: underline;
 }
 
-.question-form h2,
-.question-history h2 {
-    margin-top: 0;
+.danger-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0 16px;
+    border: none;
+    border-radius: 12px;
+    background: #7f1d1d;
+    color: #fff;
+    font-weight: 800;
+    cursor: pointer;
 }
 
-.question-form textarea::placeholder {
-    color: #999;
+.danger-button:hover {
+    opacity: 0.85;
 }
 
-.soup-form {
+/* =========================================================
+   5. Forms
+   ========================================================= */
+
+.soup-form,
+.answer-form {
     margin-top: 24px;
 }
 
@@ -171,228 +285,258 @@ body {
 
 .form-group label {
     display: block;
-    font-weight: bold;
     margin-bottom: 6px;
+    font-weight: 800;
 }
 
 .form-group input[type="text"],
-.form-group textarea {
+.form-group textarea,
+.answer-form textarea {
     width: 100%;
     padding: 10px;
-    box-sizing: border-box;
     border: 1px solid #ccc;
-    border-radius: 6px;
+    border-radius: 8px;
     font: inherit;
 }
 
-.form-group textarea {
+.form-group textarea,
+.answer-form textarea {
     min-height: 120px;
 }
 
-.primary-button {
-    padding: 10px 18px;
-    background-color: #222;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-.primary-button:hover {
-    opacity: 0.85;
-}
-
-.answer-form {
-    margin-top: 32px;
-    padding: 16px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+.error-box {
+    margin-bottom: 16px;
+    padding: 12px;
+    background: #fff0f0;
+    border: 1px solid #e0a0a0;
+    border-radius: 10px;
 }
 
 .success-box {
     padding: 20px;
-    background-color: #f0fff4;
+    background: #f0fff4;
     border: 1px solid #8fd19e;
-    border-radius: 8px;
+    border-radius: 10px;
 }
 
 .success-box h2 {
     margin-top: 0;
 }
 
-.page-actions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin: 24px 0;
+/* =========================================================
+   6. Index page
+   ========================================================= */
+
+.index-page .page-header {
+    margin-bottom: 28px;
 }
 
-.back-link {
-    color: #333;
-    text-decoration: none;
-    font-weight: bold;
+.index-page .page-header h1 {
+    margin: 0 0 10px;
+    font-size: 36px;
+    line-height: 1.2;
 }
 
-.back-link:hover {
-    text-decoration: underline;
+.index-page .page-header p {
+    margin: 0 0 20px;
+    color: #555;
+    line-height: 1.8;
 }
 
-.primary-link,
-.primary-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 18px;
-    background-color: #222;
-    color: #fff;
-    text-decoration: none;
-    border: none;
-    border-radius: 8px;
-    font: inherit;
-    font-weight: bold;
-    cursor: pointer;
+.new-question-area {
+    width: 100%;
 }
 
-.primary-link:hover,
-.primary-button:hover {
-    opacity: 0.85;
+.new-question-link {
+    width: 100%;
+    min-height: 52px;
+    border-radius: 14px;
+    text-align: center;
 }
 
-.site-header {
-    background-color: #fff;
-    border-bottom: 1px solid #ddd;
+.soup-list {
+    margin-top: 28px;
 }
 
-.site-header-inner {
-    max-width: 760px;
-    margin: 0 auto;
-    padding: 16px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.site-logo {
-    font-weight: bold;
-    color: #222;
-    text-decoration: none;
-}
-
-.auth-area {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.auth-button {
-    padding: 8px 14px;
-    background-color: #222;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font: inherit;
-    cursor: pointer;
-}
-
-.auth-button:hover {
-    opacity: 0.85;
-}
-
-.flash {
-    max-width: 760px;
-    margin: 20px auto 0;
-    padding: 12px 16px;
-    border-radius: 8px;
-    font-weight: bold;
-}
-
-.flash-notice {
-    background-color: #f0fff4;
-    border: 1px solid #8fd19e;
-    color: #22543d;
-}
-
-.flash-alert {
-    background-color: #fff0f0;
-    border: 1px solid #e0a0a0;
-    color: #7f1d1d;
-}
-
-.owner-actions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin: 16px 0 24px;
-}
-
-.danger-button {
-    padding: 8px 14px;
-    background-color: #7f1d1d;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font: inherit;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.danger-button:hover {
-    opacity: 0.85;
-}
-
-.header-link {
-    color: #222;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.header-link:hover {
-    text-decoration: underline;
-}
-
-/* ===== Detail page common sections ===== */
-
-.rating-summary,
-.rating-form,
-.question-form,
-.question-history,
-.answer-reveal {
-    margin-top: 32px;
-    padding: 28px;
-    background: #ffffff;
-    border: 1px solid #e5e5e5;
-    border-radius: 16px;
-}
-
-.rating-summary h2,
-.rating-form h2,
-.question-form h2,
-.question-history h2,
-.answer-reveal h2 {
-    margin-top: 0;
-    margin-bottom: 20px;
+.soup-list h2 {
+    margin: 0 0 18px;
     font-size: 28px;
     line-height: 1.3;
 }
 
-.rating-summary p,
-.rating-form p {
-    margin: 10px 0;
-    color: #333;
-    font-size: 16px;
+.soup-card {
+    margin-bottom: 16px;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 16px;
 }
 
-/* ===== Rating form ===== */
+.soup-card-title {
+    margin: 0 0 12px;
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+.soup-question-body {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    color: #444;
+    line-height: 1.7;
+}
+
+.soup-question-body p {
+    margin: 0;
+}
+
+.card-link {
+    display: inline-block;
+    margin-top: 18px;
+    color: #222;
+    font-weight: 800;
+    text-decoration: underline;
+}
+
+/* =========================================================
+   7. Show page
+   ========================================================= */
+
+.soup-show-page {
+    margin-top: 16px;
+    padding-top: 16px;
+}
+
+.soup-main-card {
+    margin-top: 0;
+    padding: 18px;
+    border: 1px solid #e5e5e5;
+    border-radius: 16px;
+    background: #fff;
+}
+
+.soup-title {
+    margin: 0 0 8px;
+    font-size: 24px;
+    line-height: 1.35;
+}
+
+.rating-compact {
+    display: inline-grid;
+    gap: 3px;
+    margin-bottom: 12px;
+    padding: 7px 10px;
+    border-radius: 999px;
+    background: #f4f4f4;
+    color: #555;
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.soup-body {
+    margin: 0;
+    padding: 0;
+    border-left: none;
+    background: transparent;
+    font-size: 15px;
+    line-height: 1.75;
+}
+
+.soup-body p {
+    margin: 0;
+}
+
+.compact-section,
+.question-form,
+.question-history,
+.rating-form,
+.answer-reveal {
+    margin-top: 14px;
+    padding: 18px;
+    border: 1px solid #e5e5e5;
+    border-radius: 16px;
+    background: #fff;
+}
+
+.compact-section h2,
+.question-form h2,
+.question-history h2,
+.rating-form h2,
+.answer-reveal h2 {
+    margin: 0 0 12px;
+    font-size: 18px;
+    line-height: 1.35;
+}
+
+/* ---------- Question form ---------- */
+
+.question-form form {
+    display: grid;
+    gap: 12px;
+}
+
+.question-form label {
+    display: none;
+}
+
+.question-form textarea {
+    width: 100%;
+    min-height: 86px;
+    padding: 12px;
+    border: 1px solid #bbb;
+    border-radius: 12px;
+    font-size: 16px;
+    line-height: 1.6;
+    resize: vertical;
+}
+
+.question-form textarea::placeholder {
+    color: #999;
+}
+
+.question-action-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.question-form input[type="submit"].btn {
+    width: 100%;
+}
+
+/* ---------- Question history ---------- */
+
+.question-card {
+    margin-top: 10px;
+    padding: 13px 14px;
+    border: 1px solid #e2e2e2;
+    border-radius: 14px;
+    background: #fafafa;
+}
+
+.question-card p {
+    margin: 4px 0;
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+.question-card .answer {
+    color: #444;
+    font-weight: 700;
+}
+
+/* ---------- Rating form ---------- */
 
 .rating-form form {
     display: grid;
-    gap: 16px;
-    max-width: 360px;
+    gap: 12px;
 }
 
 .rating-form label {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
+    font-size: 13px;
     font-weight: 700;
 }
 
@@ -402,170 +546,100 @@ body {
     border: 1px solid #bbb;
     border-radius: 10px;
     background: #fff;
-    font-size: 16px;
+    font-size: 15px;
 }
 
-.rating-form input[type="submit"] {
-    width: fit-content;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 12px;
-    background: #222;
-    color: #fff;
-    font-weight: 700;
-    font-size: 16px;
-    cursor: pointer;
+/* =========================================================
+   8. Legacy cleanup
+   ========================================================= */
+
+/* 問題ページ内メニューはヘッダーに統合済み */
+.soup-mobile-menu {
+    display: none !important;
 }
 
-.rating-form input[type="submit"]:hover {
-    opacity: 0.85;
-}
-
-/* ===== Question form ===== */
-
-.question-form form {
-    display: grid;
-    gap: 18px;
-}
-
-.question-form label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 700;
-}
-
-.question-form textarea {
-    width: 100%;
-    min-height: 120px;
-    padding: 16px;
-    border: 1px solid #bbb;
-    border-radius: 12px;
-    font-size: 16px;
-    line-height: 1.7;
-    resize: vertical;
-    box-sizing: border-box;
-}
-
-.question-form textarea::placeholder {
-    color: #999;
-}
-
-.question-form input[type="submit"] {
-    width: fit-content;
-    padding: 14px 24px;
-    border: none;
-    border-radius: 12px;
-    background: #222;
-    color: #fff;
-    font-size: 17px;
-    font-weight: 700;
-    cursor: pointer;
-}
-
-.question-form input[type="submit"]:hover {
-    opacity: 0.85;
-}
-
-/* ===== Page actions ===== */
-
-.page-actions {
+/* 古いページ操作ボタン群が残っても暴れないように */
+.page-actions,
+.owner-actions {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 14px;
-    margin-top: 28px;
+    gap: 12px;
+    margin: 20px 0;
 }
 
-.page-actions form {
+.page-actions form,
+.owner-actions form {
     margin: 0;
 }
 
-.back-link,
-.primary-link,
-.page-actions button,
-.page-actions input[type="submit"] {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 44px;
-    padding: 0 18px;
-    border-radius: 12px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-    font-weight: 700;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.back-link {
-    color: #222;
-    background: #fff;
-}
-
-.primary-link {
-    color: #fff;
-    background: #222;
-    border-color: #222;
-}
-
-.page-actions button,
-.page-actions input[type="submit"] {
-    color: #222;
-    background: #fff;
-}
-
-.back-link:hover,
-.primary-link:hover,
-.page-actions button:hover,
-.page-actions input[type="submit"]:hover {
-    opacity: 0.85;
-}
-
-/* ===== Question history ===== */
-
-.question-card {
-    padding: 18px 20px;
-    margin-top: 14px;
-    border: 1px solid #e2e2e2;
-    border-radius: 14px;
-    background: #fafafa;
-}
-
-.question-card p {
-    margin: 6px 0;
-    line-height: 1.7;
-}
-
-.question-card .answer {
-    color: #444;
-}
-
-/* ===== Mobile ===== */
+/* =========================================================
+   9. Responsive
+   ========================================================= */
 
 @media (max-width: 640px) {
+    .site-header-inner {
+        width: 100%;
+        padding: 12px 16px;
+    }
 
-    .rating-summary,
-    .rating-form,
+    .page {
+        width: 100%;
+        margin: 0 auto;
+        padding: 16px;
+        border-radius: 0;
+    }
+
+    .flash {
+        width: calc(100% - 32px);
+        margin-top: 12px;
+    }
+
+    .index-page .page-header h1 {
+        font-size: 32px;
+    }
+
+    .soup-list h2 {
+        font-size: 26px;
+    }
+
+    .soup-card {
+        padding: 18px;
+    }
+
+    .soup-show-page {
+        padding-top: 10px;
+    }
+
+    .soup-main-card,
+    .compact-section,
     .question-form,
     .question-history,
+    .rating-form,
     .answer-reveal {
-        padding: 20px;
+        padding: 16px;
         border-radius: 14px;
     }
 
-    .page-actions {
-        align-items: stretch;
+    .soup-title {
+        font-size: 22px;
     }
 
-    .back-link,
-    .primary-link,
-    .page-actions button,
-    .page-actions input[type="submit"] {
-        width: 100%;
+    .rating-compact {
+        font-size: 11px;
     }
 
-    .question-form input[type="submit"],
-    .rating-form input[type="submit"] {
+    .question-action-row {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 380px) {
+    .question-action-row {
+        grid-template-columns: 1fr;
+    }
+
+    .btn {
         width: 100%;
     }
 }

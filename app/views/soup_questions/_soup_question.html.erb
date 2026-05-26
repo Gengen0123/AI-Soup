@@ -1,7 +1,11 @@
-<div id="<%= dom_id soup_question %>">
-  <h1 class="soup-title"><%= soup_question.title %></h1>
+<div id="<%= dom_id soup_question %>" class="soup-card">
+  <h3 class="soup-card-title">
+    <%= soup_question.title %>
+  </h3>
 
-  <div class="soup-body">
-    <%= soup_question.body %>
+  <div class="soup-question-body">
+    <%= simple_format(soup_question.body) %>
   </div>
+
+  <%= link_to "この問題で遊ぶ", soup_question_path(soup_question), class: "card-link" %>
 </div>

@@ -1,56 +1,70 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Eureka Soup" %></title>
+    <title><%= content_for(:title) || "AI-Soup" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Eureka Soup">
+    <meta name="application-name" content="AI-Soup">
     <meta name="mobile-web-app-capable" content="yes">
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= yield :head %>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
-  <header class="site-header">
-  <div class="site-header-inner">
-    <%= link_to "AI-Soup", root_path, class: "site-logo" %>
+    <header class="site-header">
+      <div class="site-header-inner">
+        <%= link_to "AI-Soup", root_path, class: "site-logo" %>
 
-    <div class="auth-area">
-      <% if logged_in? %>
-  <%= link_to "自分の問題", my_soup_questions_path, class: "header-link" %>
-  <span><%= current_user.name %> さん</span>
-  <%= button_to "ログアウト", logout_path, method: :delete, class: "auth-button" %>
-<% else %>
-        <%= button_to "Googleでログイン", "/auth/google_oauth2", method: :post, data: { turbo: false }, class: "auth-button" %>
-      <% end %>
-    </div>
-  </div>
-</header>
+        <details class="global-menu">
+  <summary class="global-menu-button" aria-label="メニュー">︙</summary>
 
-<% if notice.present? %>
-  <div class="flash flash-notice">
-    <%= notice %>
-  </div>
-<% end %>
+  <div class="global-menu-panel">
+    <% if logged_in? %>
+      <div class="global-menu-user">
+        <%= current_user.name %> さん
+      </div>
 
-<% if alert.present? %>
-  <div class="flash flash-alert">
-    <%= alert %>
+      <%= link_to "自分の問題", my_soup_questions_path, class: "global-menu-link" %>
+
+      <%= button_to "ログアウト",
+          logout_path,
+          method: :delete,
+          class: "global-menu-button-item" %>
+    <% else %>
+      <%= button_to "Googleでログイン",
+          "/auth/google_oauth2",
+          method: :post,
+          data: { turbo: false },
+          class: "global-menu-button-item" %>
+    <% end %>
+
+    <%= yield :global_menu_items %>
   </div>
-<% end %>
+</details>
+      </div>
+    </header>
+
+    <% if notice.present? %>
+      <div class="flash flash-notice">
+        <%= notice %>
+      </div>
+    <% end %>
+
+    <% if alert.present? %>
+      <div class="flash flash-alert">
+        <%= alert %>
+      </div>
+    <% end %>
 
     <%= yield %>
   </body>

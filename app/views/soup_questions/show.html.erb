@@ -1,111 +1,74 @@
 <% content_for :title, @soup_question.title %>
+<% content_for :global_menu_items do %>
+  <div class="global-menu-separator"></div>
 
-<div class="page">
-  <%= render @soup_question %>
+  <%= link_to "問題一覧に戻る", soup_questions_path, class: "global-menu-link" %>
 
-<section class="rating-summary">
-  <h2>評価</h2>
-
-  <% if @soup_question.ratings_count > 0 %>
-    <p>スッキリ度：<%= @soup_question.average_clarity_score %> / 5</p>
-    <p>難易度：<%= @soup_question.average_difficulty_score %> / 5</p>
-    <p>評価数：<%= @soup_question.ratings_count %>件</p>
-  <% else %>
-    <p>まだ評価はありません。</p>
+  <% unless @attempt.gave_up? || @attempt.solved? %>
+    <%= button_to "ギブアップ",
+        give_up_soup_question_path(@soup_question),
+        method: :post,
+        class: "global-menu-button-item danger-menu-button",
+        data: { turbo_confirm: "ギブアップすると解説が表示されます。本当にギブアップしますか？" } %>
   <% end %>
-</section>
 
-<% if logged_in? && @soup_question.user != current_user %>
-  <section class="rating-form">
-    <h2>この問題を評価する</h2>
+  <% if logged_in? && @soup_question.user == current_user %>
+    <%= link_to "問題を編集する",
+        edit_soup_question_path(@soup_question),
+        class: "global-menu-link" %>
 
-    <% if @rating.present? %>
-      <%= form_with(model: [@soup_question, @rating]) do |f| %>
-        <div>
-          <%= f.label :clarity_score, "スッキリ度" %><br>
-          <%= f.select :clarity_score, options_for_select((1..5).map { |n| ["#{n}", n] }, @rating.clarity_score) %>
-        </div>
-
-        <div>
-          <%= f.label :difficulty_score, "難易度" %><br>
-          <%= f.select :difficulty_score, options_for_select((1..5).map { |n| ["#{n}", n] }, @rating.difficulty_score) %>
-        </div>
-
-        <div>
-          <%= f.submit "評価を更新する" %>
-        </div>
-      <% end %>
-    <% else %>
-      <%= form_with(model: [@soup_question, SoupQuestionRating.new]) do |f| %>
-        <div>
-          <%= f.label :clarity_score, "スッキリ度" %><br>
-          <%= f.select :clarity_score, options_for_select((1..5).map { |n| ["#{n}", n] }) %>
-        </div>
-
-        <div>
-          <%= f.label :difficulty_score, "難易度" %><br>
-          <%= f.select :difficulty_score, options_for_select((1..5).map { |n| ["#{n}", n] }) %>
-        </div>
-
-        <div>
-          <%= f.submit "評価する" %>
-        </div>
-      <% end %>
-    <% end %>
-  </section>
-<% elsif logged_in? && @soup_question.user == current_user %>
-  <section class="rating-form">
-    <p>作問者は自分の問題を評価できません。</p>
-  </section>
-<% else %>
-  <section class="rating-form">
-    <p>評価するにはGoogleログインが必要です。</p>
-  </section>
+    <%= button_to "問題を削除する",
+        @soup_question,
+        method: :delete,
+        class: "global-menu-button-item danger-menu-button",
+        data: { turbo_confirm: "本当に削除しますか？" } %>
+  <% end %>
 <% end %>
 
- <div class="page-actions">
-  <%= link_to "問題一覧に戻る", soup_questions_path, class: "back-link" %>
-  <%= link_to "答える", answer_soup_question_path(@soup_question), class: "primary-link" %>
+<div class="page soup-show-page">
+  <section class="soup-main-card">
+    <h1 class="soup-title"><%= @soup_question.title %></h1>
 
-  <%= button_to "ギブアップ", give_up_soup_question_path(@soup_question),
-      method: :post,
-      class: "back-link",
-      data: { turbo_confirm: "ギブアップすると解説が表示されます。本当にギブアップしますか？" } %>
-</div>
-  
-<% if logged_in? && @soup_question.user == current_user %>
-  <div class="owner-actions">
-    <%= link_to "問題を編集する", edit_soup_question_path(@soup_question), class: "back-link" %>
-
-    <%= button_to "問題を削除する", @soup_question, method: :delete, class: "danger-button", data: { turbo_confirm: "本当に削除しますか？" } %>
-  </div>
-<% end %>
-
-<% if @attempt.gave_up? || @attempt.solved? %>
-  <section class="answer-reveal">
-    <h2>解説</h2>
-
-    <div class="question-card">
-      <p><strong>正解:</strong> <%= @soup_question.answer %></p>
-      <p><strong>解説:</strong> <%= @soup_question.explanation %></p>
+    <div class="rating-compact">
+      <% if @soup_question.ratings_count > 0 %>
+        <div>スッキリ度：<%= star_rating(@soup_question.average_clarity_score) %></div>
+        <div>難易度：<%= star_rating(@soup_question.average_difficulty_score) %></div>
+      <% else %>
+        <div>評価：まだありません</div>
+      <% end %>
     </div>
 
-    <div class="page-actions">
-      <%= button_to "もう一度挑戦する",
-          retry_attempt_soup_question_path(@soup_question),
-          method: :post,
-          class: "primary-link",
-          data: { turbo_confirm: "質問履歴とクリア状態をリセットして、もう一度挑戦しますか？" } %>
+    <div class="soup-body">
+      <%= simple_format(@soup_question.body) %>
     </div>
   </section>
-<% end %>
 
-  <section class="question-form">
+  <% if @attempt.gave_up? || @attempt.solved? %>
+    <section class="answer-reveal compact-section">
+      <h2>解説</h2>
+
+      <div class="question-card">
+        <p><strong>正解:</strong> <%= @soup_question.answer %></p>
+        <p><strong>解説:</strong> <%= @soup_question.explanation %></p>
+      </div>
+
+      <div class="action-row">
+        <%= button_to "もう一度挑戦する",
+            retry_attempt_soup_question_path(@soup_question),
+            method: :post,
+            class: "btn btn-primary",
+            data: { turbo_confirm: "質問履歴とクリア状態をリセットして、もう一度挑戦しますか？" } %>
+      </div>
+    </section>
+  <% end %>
+
+  <section class="question-form compact-section">
     <h2>質問する</h2>
 
     <% if @question.errors.any? %>
       <div class="error-box">
         <p>質問を送信できませんでした。</p>
+
         <ul>
           <% @question.errors.each do |error| %>
             <% if error.attribute == :body && error.type == :blank %>
@@ -122,28 +85,78 @@
 
     <%= form_with(model: [@soup_question, @question]) do |f| %>
       <div>
-        <%= f.label :body, "質問内容" %><br>
-        <%= f.text_area :body, placeholder: "例：真犯人は人間ですか？" %>
+        <%= f.text_area :body, placeholder: "はい or いいえ で回答できる質問を記入し、ヒントになる情報を集めましょう。" %>
       </div>
 
-      <div>
-        <%= f.submit "質問する" %>
+      <div class="question-action-row">
+        <%= f.submit "質問する", class: "btn btn-primary btn-question" %>
+        <%= link_to "答える",
+            answer_soup_question_path(@soup_question),
+            class: "btn btn-secondary" %>
       </div>
     <% end %>
   </section>
 
-  <section class="question-history">
-  <h2>これまでの質問</h2>
+  <section class="question-history compact-section">
+    <h2>これまでの質問</h2>
 
-  <% if @questions.any? %>
-    <% @questions.each do |q| %>
-      <div class="question-card">
-        <p><strong>Q:</strong> <%= q.body %></p>
-        <p class="answer"><strong>A:</strong> <%= q.answer %></p>
-      </div>
+    <% if @questions.any? %>
+      <% @questions.each do |q| %>
+        <div class="question-card">
+          <p><strong>Q:</strong> <%= q.body %></p>
+          <p class="answer"><strong>A:</strong> <%= q.answer %></p>
+        </div>
+      <% end %>
+    <% else %>
+      <p>まだ質問はありません。</p>
     <% end %>
+  </section>
+
+  <% if logged_in? && @soup_question.user != current_user %>
+    <section class="rating-form compact-section">
+      <h2>この問題を評価する</h2>
+
+      <% if @rating.present? %>
+        <%= form_with(model: [@soup_question, @rating]) do |f| %>
+          <div>
+            <%= f.label :clarity_score, "スッキリ度" %>
+            <%= f.select :clarity_score,
+                options_for_select((1..5).map { |n| ["#{n}", n] }, @rating.clarity_score) %>
+          </div>
+
+          <div>
+            <%= f.label :difficulty_score, "難易度" %>
+            <%= f.select :difficulty_score,
+                options_for_select((1..5).map { |n| ["#{n}", n] }, @rating.difficulty_score) %>
+          </div>
+
+          <%= f.submit "評価を更新する", class: "btn btn-secondary" %>
+        <% end %>
+      <% else %>
+        <%= form_with(model: [@soup_question, SoupQuestionRating.new]) do |f| %>
+          <div>
+            <%= f.label :clarity_score, "スッキリ度" %>
+            <%= f.select :clarity_score,
+                options_for_select((1..5).map { |n| ["#{n}", n] }) %>
+          </div>
+
+          <div>
+            <%= f.label :difficulty_score, "難易度" %>
+            <%= f.select :difficulty_score,
+                options_for_select((1..5).map { |n| ["#{n}", n] }) %>
+          </div>
+
+          <%= f.submit "評価する", class: "btn btn-secondary" %>
+        <% end %>
+      <% end %>
+    </section>
+  <% elsif logged_in? && @soup_question.user == current_user %>
+    <section class="rating-form compact-section">
+      <p>作問者は自分の問題を評価できません。</p>
+    </section>
   <% else %>
-    <p>まだ質問はありません。</p>
+    <section class="rating-form compact-section">
+      <p>評価するにはGoogleログインが必要です。</p>
+    </section>
   <% end %>
-</section>
 </div>

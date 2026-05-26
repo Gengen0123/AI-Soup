@@ -1,11 +1,13 @@
 <% content_for :title, "AI-Soup" %>
 
-<div class="page">
+<div class="page index-page">
   <header class="page-header">
     <h1>AI-Soup</h1>
     <p>AIが「はい / いいえ / 関係ない」で回答する、ウミガメのスープ風クイズアプリです。</p>
 
-    <%= link_to "新しい問題を作成", new_soup_question_path, class: "primary-link" %>
+    <div class="new-question-area">
+      <%= link_to "新しい問題を作成", new_soup_question_path, class: "primary-link new-question-link" %>
+    </div>
   </header>
 
   <section class="soup-list">
@@ -13,15 +15,7 @@
 
     <% if @soup_questions.any? %>
       <% @soup_questions.each do |soup_question| %>
-        <div class="soup-card">
-          <h3><%= soup_question.title %></h3>
-
-          <p>
-            <%= truncate(soup_question.body, length: 120) %>
-          </p>
-
-          <%= link_to "この問題で遊ぶ", soup_question_path(soup_question), class: "card-link" %>
-        </div>
+        <%= render soup_question %>
       <% end %>
     <% else %>
       <p>まだ問題がありません。</p>

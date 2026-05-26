@@ -34,7 +34,7 @@
 <%= form_with url: check_answer_soup_question_path(@soup_question), method: :post, data: { turbo: false } do |f| %>       
      <div class="form-group">
           <%= f.label :answer_text, "あなたの回答" %>
-          <%= f.text_area :answer_text, value: @answer_text, placeholder: "例：ワシが空から落とした亀が男に当たった" %>
+          <%= f.text_area :answer_text, value: @answer_text, placeholder: "質問から得た情報を整理して、真実を突き止めましょう。" %>
         </div>
 
         <div>

@@ -15,7 +15,7 @@ end
 def show
   @attempt = current_soup_question_attempt
   @question = Question.new
-  @questions = @attempt.questions.order(created_at: :asc)
+  @questions = @attempt.questions.order(created_at: :desc)
 
   @rating = current_user ? @soup_question.soup_question_ratings.find_by(user: current_user) : nil
 end
